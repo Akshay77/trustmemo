@@ -106,19 +106,25 @@ Open `http://localhost:3000`.
 
 ## Screenshots
 
-Three images in `docs/screenshots/`:
+Files live in `docs/screenshots/`.
 
-| File | What it shows |
-|------|----------------|
-| `landing.png` | Landing: value prop, question input, example questions |
-| `results.png` | Results view: top recommendation (dataset card, trust signals) plus **Why this recommendation** and score breakdown in one scroll |
-| `results-memo.png` | **Why not the alternatives?** and **Shareable decision memo** |
+### Landing
+
+Value prop, question input, and example questions.
 
 ![Landing](docs/screenshots/landing.png)
 
-![Results — recommendation and why](docs/screenshots/results.png)
+### Results — recommendation and rationale
 
-![Results — alternatives and memo](docs/screenshots/results-memo.png)
+Top recommendation (dataset card and trust signals), plus **Why this recommendation** and the score breakdown.
+
+![Results — recommendation and rationale](docs/screenshots/results.png)
+
+### Results — alternatives and decision memo
+
+**Why not the alternatives?** and the **Shareable decision memo**.
+
+![Results — alternatives and decision memo](docs/screenshots/results-memo.png)
 
 ## Future iterations (kept intentionally small)
 - Configurable weights by team (“exec reporting requires certified sources”)
