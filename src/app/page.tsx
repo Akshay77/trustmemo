@@ -1,64 +1,132 @@
-import Image from "next/image";
+"use client";
+
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { EXAMPLE_QUESTIONS } from "@/lib/exampleQuestions";
 
 export default function Home() {
+  const router = useRouter();
+  const [question, setQuestion] = useState("");
+
+  const examples = useMemo(() => EXAMPLE_QUESTIONS, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-1 flex-col">
+      <header className="border-b border-zinc-900/10 bg-white/70 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-500 to-rose-400 text-xs font-bold text-white shadow-sm ring-1 ring-zinc-900/10">
+              TD
+            </div>
+            <div className="leading-tight">
+              <div className="text-sm font-semibold tracking-tight text-zinc-900">
+                Trusted Data Question Workspace
+              </div>
+              <div className="text-xs text-zinc-600">
+                Prototype: question → trusted dataset recommendation
+              </div>
+            </div>
+          </div>
+          <div className="text-xs text-zinc-600">Mock catalog • Explainable scoring</div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-6 py-10">
+        <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
+          <section className="rounded-2xl border border-zinc-900/10 bg-white p-6 shadow-sm">
+            <div className="max-w-2xl">
+              <h1 className="text-balance text-2xl font-semibold tracking-tight text-zinc-900">
+                Start with the question. Get a trusted dataset with an audit trail.
+              </h1>
+              <p className="mt-2 text-sm leading-6 text-zinc-700">
+                This prototype simulates an enterprise metadata layer (owner, steward, certification,
+                freshness, quality checks, lineage, downstream usage, governance) and ranks the
+                best dataset for your intent — with transparent reasoning.
+              </p>
+            </div>
+
+            <form
+              className="mt-5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const q = question.trim();
+                if (!q) return;
+                router.push(`/results?q=${encodeURIComponent(q)}`);
+              }}
+            >
+              <label className="text-xs font-medium text-zinc-700">
+                Business / data question
+              </label>
+              <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+                <input
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder='e.g. "Which revenue dataset should I trust for QBR reporting?"'
+                  className="h-12 w-full rounded-xl border border-zinc-900/10 bg-white px-4 text-sm text-zinc-900 placeholder:text-zinc-500 outline-none ring-0 focus:border-amber-400/60 focus:ring-2 focus:ring-amber-200"
+                />
+                <button
+                  type="submit"
+                  className="inline-flex h-12 items-center justify-center rounded-xl bg-amber-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-500"
+                >
+                  Find trusted data
+                </button>
+              </div>
+              <div className="mt-3 text-xs text-zinc-600">
+                No warehouse connection. Everything is mocked — the goal is product clarity and
+                believable governance/trust logic.
+              </div>
+            </form>
+
+            <div className="mt-6">
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-medium text-zinc-700">Example questions</div>
+                <div className="text-xs text-zinc-500">Click to load</div>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {examples.map((ex) => (
+                  <button
+                    key={ex.label}
+                    type="button"
+                    onClick={() => setQuestion(ex.question)}
+                    className="rounded-xl border border-zinc-900/10 bg-white p-3 text-left transition hover:bg-zinc-50"
+                  >
+                    <div className="text-xs font-semibold text-zinc-900">{ex.label}</div>
+                    <div className="mt-1 text-xs leading-5 text-zinc-600">{ex.question}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <aside className="rounded-2xl border border-zinc-900/10 bg-white p-6 shadow-sm">
+            <div className="text-xs font-semibold text-zinc-900">What this prototype is optimizing for</div>
+            <ul className="mt-3 space-y-3 text-sm text-zinc-700">
+              <li>
+                <div className="text-xs font-semibold text-zinc-900">Fast decision-making</div>
+                <div className="mt-1 text-xs leading-5 text-zinc-600">
+                  Reduce “which table do we trust?” back-and-forth by making the first recommendation defensible.
+                </div>
+              </li>
+              <li>
+                <div className="text-xs font-semibold text-zinc-900">Explainability over magic</div>
+                <div className="mt-1 text-xs leading-5 text-zinc-600">
+                  Every score component is visible. You can see exactly what drove the recommendation.
+                </div>
+              </li>
+              <li>
+                <div className="text-xs font-semibold text-zinc-900">Governance-aware guidance</div>
+                <div className="mt-1 text-xs leading-5 text-zinc-600">
+                  “Trusted” includes freshness, checks, lineage, and policy fit — not just popularity.
+                </div>
+              </li>
+            </ul>
+          </aside>
         </div>
+
+        <footer className="flex flex-col gap-2 border-t border-zinc-900/10 pt-6 text-xs text-zinc-600 sm:flex-row sm:items-center sm:justify-between">
+          <div>Designed as a narrow, believable first bet for trusted data decisions.</div>
+          <div>Tip: try “revenue QBR” or “WAU executive dashboard”.</div>
+        </footer>
       </main>
     </div>
   );
